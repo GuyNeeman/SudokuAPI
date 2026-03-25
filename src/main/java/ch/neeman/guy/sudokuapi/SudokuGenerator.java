@@ -9,7 +9,19 @@ public class SudokuGenerator {
 
     public static int[] generate(String difficulty) {
         int[][] field = new int[9][9];
-
+        int removenum;
+        System.out.println(difficulty);
+        if (difficulty.equalsIgnoreCase("easy")) {
+            removenum = 40;
+        } else if (difficulty.equalsIgnoreCase("medium")) {
+            removenum = 50;
+        } else if (difficulty.equalsIgnoreCase("hard")) {
+            removenum = 55;
+        } else if (difficulty.equalsIgnoreCase("impossible")) {
+            removenum = 64;
+        } else {
+            removenum = 40; // default
+        }
         // Base pattern
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -34,8 +46,9 @@ public class SudokuGenerator {
         shuffleCols(field, 0, 8, 3);
 
         int[] newField = flatten(field);
+        int[] normalfield = flatten(field);
         System.out.println(Arrays.toString(newField));
-        removeNumbers(newField, 40);
+        removeNumbers(newField, removenum);
 
         return newField;
     }

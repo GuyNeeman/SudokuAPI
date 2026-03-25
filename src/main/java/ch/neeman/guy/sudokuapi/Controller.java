@@ -17,7 +17,7 @@ public class Controller {
         this.sudokuApiApplication = sudokuApiApplication;
     }
 
-    @GetMapping("/create{difficulty}")
+    @GetMapping("/create/{difficulty}")
     public int[] createMessage(@PathVariable String difficulty) {
         SudokuGenerator cr = new SudokuGenerator();
         int[] field = SudokuGenerator.generate(difficulty);
