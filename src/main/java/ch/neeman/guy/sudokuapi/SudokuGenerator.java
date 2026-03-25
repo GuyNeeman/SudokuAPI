@@ -7,10 +7,10 @@ public class SudokuGenerator {
 
     private static final Random random = new Random();
 
-    public static int[] generate(String difficulty) {
+    public static SudokuResult generate(String difficulty) {
         int[][] field = new int[9][9];
         int removenum;
-        System.out.println(difficulty);
+
         if (difficulty.equalsIgnoreCase("easy")) {
             removenum = 40;
         } else if (difficulty.equalsIgnoreCase("medium")) {
@@ -20,8 +20,9 @@ public class SudokuGenerator {
         } else if (difficulty.equalsIgnoreCase("impossible")) {
             removenum = 64;
         } else {
-            removenum = 40; // default
+            removenum = 40;
         }
+
         // Base pattern
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -29,28 +30,24 @@ public class SudokuGenerator {
             }
         }
 
-        // Shuffle inside each band (rows)
+        // Shuffle logic (unchanged)
         for (int band = 0; band < 3; band++) {
             shuffleRows(field, band * 3, band * 3 + 2);
         }
 
-        // Shuffle inside each stack (columns)
         for (int stack = 0; stack < 3; stack++) {
             shuffleCols(field, stack * 3, stack * 3 + 2);
         }
 
-        // Shuffle whole bands
         shuffleRows(field, 0, 8, 3);
-
-        // Shuffle whole stacks
         shuffleCols(field, 0, 8, 3);
 
-        int[] newField = flatten(field);
-        int[] normalfield = flatten(field);
-        System.out.println(Arrays.toString(newField));
-        removeNumbers(newField, removenum);
+        int[] solution = flatten(field);     // full solved board
+        int[] puzzle = solution.clone();    // IMPORTANT: clone before removing
 
-        return newField;
+        removeNumbers(puzzle, removenum);
+
+        return new SudokuResult(puzzle, solution);
     }
 
     private static int[] flatten(int[][] field) {
